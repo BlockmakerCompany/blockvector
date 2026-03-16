@@ -5,9 +5,9 @@
 ![Platform](https://img.shields.io/badge/Architecture-x86__64%20%2F%20ARM64-red)
 ![Latency](https://img.shields.io/badge/Latency-Sub--7ms-green?logo=lightning)
 ![Company](https://img.shields.io/badge/Backed%20By-BlockMaker%20S.R.L.-black)
-[![Docker Hub](https://img.shields.io/badge/Docker%20Hub-Images-blue?logo=docker&logoColor=white)](https://hub.docker.com/r/blockmakercompany/blockvector)
+[![Docker Hub](https://img.shields.io/badge/Docker%20Hub-Images-blue?logo=docker&logoColor=white)](https://hub.docker.com/r/blockmaker/blockvector)
 
-**BlockVector** is a high-performance, bare-metal vector search engine engineered for extreme low-latency environments. Built from the ground up by **Blockmaker Company** using Go and hand-optimized x86_64 Assembly (AVX2), it redefines how high-dimensional embeddings are processed at the edge.
+**BlockVector** is a high-performance, bare-metal vector search engine engineered for extreme low-latency environments. Built from the ground up by **Blockmaker Company** using Go and hand-optimized x86_64 Assembly (AVX2 & NEON), it redefines how high-dimensional embeddings are processed at the edge.
 
 While traditional vector databases rely on heavy abstractions and massive memory overhead, **BlockVector** talks directly to the silicon. It is designed for engineers who refuse to trade precision for performance.
 
@@ -89,6 +89,18 @@ Check the logs to verify that the architecture dispatcher has selected the **AVX
 ```bash
 # Direct access to the container logs
 docker compose -f deployments/docker-compose.yaml logs -f server
+```
+
+### 🐳 Quick Start with Docker
+
+You can run **BlockVector** instantly using our official Docker image:
+
+```bash
+# Pull the latest image
+docker pull blockmaker/blockvector:latest
+
+# Run the server
+docker run -p 8080:8080 -v $(pwd)/data:/app/data blockmaker/blockvector:latest
 ```
 
 ---
@@ -278,7 +290,7 @@ The engine leverages `syscall.Mmap` to map the dataset directly into the process
 
 BlockVector is an evolving engine. Our development path focuses on expanding hardware saturation and adding high-level indexing without sacrificing our "bare-metal" philosophy.
 
-- [x] **ARM64 (NEON) Native Kernels:** Ported the SIMD logic to ARM64 for peak performance on Apple Silicon and AWS Graviton.
+- [x] **ARM64 (NEON) Native Kernels: Optimized for Apple Silicon and AWS Graviton:** Ported the SIMD logic to ARM64 for peak performance on Apple Silicon and AWS Graviton.
 - [ ] **AVX-512 Support:** Developing 512-bit wide SIMD kernels to double the throughput on high-end Intel Xeon and AMD EPYC servers.
 - [ ] **HNSW Graph Indexing:** Implementing a Hierarchical Navigable Small World (HNSW) layer over the mmap'ed raw vectors.
 - [ ] **Official Language Wrappers:** Developing high-level, idiomatic packages for **Python (PyO3)** and **Rust**.

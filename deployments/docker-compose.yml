@@ -1,14 +1,9 @@
 version: '3.8'
 
 services:
-  # ==========================================
-  # 1. Search Engine (HTTP Server)
-  # ==========================================
   server:
-    build:
-      context: ..
-      dockerfile: deployments/Dockerfile
     container_name: blockvector-server
+    image: blockmaker/blockvector:latest
     ports:
       - "8080:8080"
     environment:
@@ -17,24 +12,44 @@ services:
       - BLOCKVECTOR_FILENAME=/app/data/blockvector.bin
       - BLOCKVECTOR_DIMENSIONS=1536
     volumes:
-      # Mapeamos la carpeta data de la raíz al contenedor
-      - ../data:/app/data
+      - ./data:/app/data
     restart: unless-stopped
+    networks:
+      - blockvector-net
 
-  # ==========================================
-  # 2. Data Generator (CLI Tool)
-  # ==========================================
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: blockvector-prometheus
+    volumes:
+      - ./deployments/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    networks:
+      - blockvector-net
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: blockvector-grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=blockmaker
+    networks:
+      - blockvector-net
+
   cli-generator:
-    build:
-      context: ..
-      dockerfile: deployments/Dockerfile
+    image: blockmakercompany/blockvector:latest
     container_name: blockvector-cli
-    # Ejecuta el CLI en lugar del server
     entrypoint: ["/app/blockvector-cli"]
     environment:
       - BLOCKVECTOR_FILENAME=/app/data/blockvector.bin
     volumes:
-      # Mapeamos la carpeta data para que el binario persista en el host
-      - ../data:/app/data
+      - ./data:/app/data
     profiles:
       - setup
+    networks:
+      - blockvector-net
+
+networks:
+  blockvector-net:
+    driver: bridge
