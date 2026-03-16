@@ -1,32 +1,47 @@
-# If you prefer the allow list template instead of the deny list, see community template:
-# https://github.com/github/gitignore/blob/main/community/Golang/Go.AllowList.gitignore
-#
-# Binaries for programs and plugins
+# --- BlockVector Specific (Large Data) ---
+# Do not commit the heavy binary datasets
+*.bin
+data/
+
+# --- Binaries & Build Artifacts ---
+# Local compiled binaries
+/bin/
+blockvector-server
+blockvector-cli
+/cmd/blockvector-cli/blockvector-cli
+/cmd/blockvector-server/blockvector-server
+
+# Generic binary extensions
 *.exe
 *.exe~
 *.dll
 *.so
 *.dylib
-
-# Test binary, built with `go test -c`
+*.a
 *.test
 
-# Code coverage profiles and other test artifacts
+# --- Go Specific ---
+vendor/
+go.work
+go.work.sum
+.deps/
+
+# --- Test & Coverage ---
 *.out
 coverage.*
 *.coverprofile
 profile.cov
 
-# Dependency directories (remove the comment below to include it)
-# vendor/
-
-# Go workspace file
-go.work
-go.work.sum
-
-# env file
+# --- Environment & Configuration ---
 .env
+.docker/
 
-# Editor/IDE
-# .idea/
-# .vscode/
+# --- Operating System Files ---
+.DS_Store
+Thumbs.db
+
+# --- IDEs & Editors ---
+.idea/
+.vscode/
+*.swp
+*.swo

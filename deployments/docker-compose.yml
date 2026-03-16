@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  # ==========================================
+  # 1. Search Engine (HTTP Server)
+  # ==========================================
+  server:
+    build:
+      context: ..
+      dockerfile: deployments/Dockerfile
+    container_name: blockvector-server
+    ports:
+      - "8080:8080"
+    environment:
+      - BLOCKVECTOR_LOG_LEVEL=INFO
+      - BLOCKVECTOR_PORT=:8080
+      - BLOCKVECTOR_FILENAME=/app/data/blockvector.bin
+      - BLOCKVECTOR_DIMENSIONS=1536
+    volumes:
+      # Mapeamos la carpeta data de la raíz al contenedor
+      - ../data:/app/data
+    restart: unless-stopped
+
+  # ==========================================
+  # 2. Data Generator (CLI Tool)
+  # ==========================================
+  cli-generator:
+    build:
+      context: ..
+      dockerfile: deployments/Dockerfile
+    container_name: blockvector-cli
+    # Ejecuta el CLI en lugar del server
+    entrypoint: ["/app/blockvector-cli"]
+    environment:
+      - BLOCKVECTOR_FILENAME=/app/data/blockvector.bin
+    volumes:
+      # Mapeamos la carpeta data para que el binario persista en el host
+      - ../data:/app/data
+    profiles:
+      - setup
