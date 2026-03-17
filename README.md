@@ -15,6 +15,23 @@ While traditional vector databases rely on heavy abstractions and massive memory
 
 ---
 
+### 💡 Why BlockVector? (The "Why" behind the "Metal")
+
+[cite_start]Modern AI infrastructure is drowning in abstractions[cite: 2, 3]. [cite_start]Most vector databases suffer from a massive **"Abstraction Tax,"** requiring gigabytes of RAM and multiple CPU cores just to handle basic similarity searches[cite: 4, 5]. [cite_start]**BlockVector eliminates this tax to talk directly to the silicon**[cite: 6, 7].
+
+* [cite_start]**25x Faster Execution**: We achieve hardware-limited performance by bypassing generic runtimes and talking directly to CPU registers (AVX2/NEON)[cite: 9, 13].
+* **75% Memory Reduction**: Int8 quantization shatters the memory bandwidth bottleneck, allowing massive datasets to reside in the L3 cache.
+* [cite_start]**Instant-On (mmap)**: Zero-copy dataset mapping via raw syscalls allows for a constant **~70µs** startup time regardless of the dataset size[cite: 15, 24].
+* [cite_start]**Architectural Sovereignty**: Every block of code is audited for register efficiency and stack integrity, ensuring performance is a structural guarantee, not a goal[cite: 14, 47, 64].
+
+**Perfect for:**
+* [cite_start]**Edge RAG**: Running high-dimensional search on IoT gateways or edge devices where every millicore counts[cite: 32, 60].
+* [cite_start]**Real-Time Recommendations**: Where sub-10ms tail latency and $O(1)$ predictability are hard requirements[cite: 24, 38].
+* [cite_start]**Cost-Optimized AI Infra**: Handling massive scale without scaling your infrastructure bill or technical debt[cite: 6, 38, 66].
+* [cite_start]**Low-Latency Sidecars**: A zero-bloat search engine that operates at the speed of the hardware itself[cite: 9, 11, 56].
+
+---
+
 ## 📑 Table of Contents
 * [🛰 Core Technologies](#-core-technologies)
 * [⚡ Performance Metrics](#-performance-metrics)
